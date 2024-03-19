@@ -31,8 +31,10 @@ body {
 }
 
 .buttons {
-  width: 50%;
-  padding: 2px 2px; 
+  width: 25%;
+  padding: 2px 2px;
+  font-size: 4vh; 
+  border: 1px solid black;
   text-align: center;
 }
 
