@@ -1,4 +1,5 @@
 //Imports
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -11,7 +12,7 @@ app.use(cors());
 
 //Variables
 const port = 5000;
-const uri = 'mongodb+srv://CollinC3:<password>@test-for-full-stack.xmzfkxh.mongodb.net/?retryWrites=true&w=majority&appName=Test-for-Full-Stack'
+const uri = process.env.MONGO_KEY
 
 //Connect to MongoDB
 async function connect() {
