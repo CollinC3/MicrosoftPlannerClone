@@ -1,9 +1,20 @@
 import React from "react";
+import { useState } from "react";
+import TaskDetails from "./taskDetailsModal";
 
 function Columns({ tasks, columns }) {
 
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentTask, setCurrentTask] = useState();
+
     const OpenModal = (task) => {
-        console.log(task);
+        setModalOpen(true);
+        setCurrentTask(task);
+    }
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setCurrentTask();
     }
 
     return (
@@ -29,7 +40,11 @@ function Columns({ tasks, columns }) {
                     </div>
                 </div>
             )}
+            {modalOpen && 
+                <TaskDetails currentTask={currentTask} updateCallback={closeModal}/>
+            }
         </div>
+        
     );
 }
 
