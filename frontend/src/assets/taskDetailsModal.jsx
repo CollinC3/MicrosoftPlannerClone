@@ -10,12 +10,35 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
     const [checklist, setChecklist] = useState(currentTask.checklist || []);
     const [comments, setComments] = useState(currentTask.comments || []);
 
-    const updateTask = (e) => {
+
+    const updateTask = async (e) => {
         e.preventDefault();
-        console.log(startDate);
-        console.log(typeof(startDate));
-        console.log("yo");
-        updateCallback();
+
+        const data = {
+            taskName,
+            bucket,
+            priority,
+            startDate,
+            dueDate,
+            description,
+            checklist,
+            comments
+        }
+        const url ="http://127.0.0.1:5000/update_task/" + `${currentTask._id}` 
+        const options = {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
+        const response = await fetch(url, options)
+        if(response.status !== 200) {
+            const data = await response.json()
+            alert(data.message);
+        } else {
+            updateCallback(data);
+        }
     }
 
     return (
@@ -44,16 +67,25 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
                 <div className="checklist">
                     <h2>Checklist</h2>
                     {checklist.map(item => {
-                        return <div key={item._id} className="checklist-item">{item.taskName}</div>
+                        return <div key={item._id} className="checklist-item">
+                            <input type="text" className="checklist-item-input" defaultValue={item.taskName} />
+                        </div>
                     })}
                 </div>
                 <div className="comments">
                     <h2>Comments</h2>
                     {comments.map(item => {
-                        return <div key={item._id} className="checklist-item">{item.comment}</div>
+                        return (
+                            <div key={item._id} className="comment-wrapper">
+                                <div className="comment-item">{item.comment}</div>
+                                <div className="comment-date">{item.commentTime}</div>
+                                <div className="comment-person">{item.person}</div>
+                            </div>
+                        )
                     })}
                 </div>
-                <button className="submit-task-changes" onClick={updateTask}>Save</button>
+                <button className="submit-task-changes" type="submit" onClick={updateTask}>Save</button>
+                <button className="reset-task-changes" type="reset">Reset Values</button>
             </form>
 
 
