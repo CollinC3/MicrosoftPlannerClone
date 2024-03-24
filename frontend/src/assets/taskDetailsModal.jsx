@@ -10,12 +10,36 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
     const [checklist, setChecklist] = useState(currentTask.checklist || []);
     const [comments, setComments] = useState(currentTask.comments || []);
 
-    const updateTask = (e) => {
+
+    const updateTask = async (e) => {
         e.preventDefault();
-        console.log(startDate);
-        console.log(typeof(startDate));
-        console.log("yo");
-        updateCallback();
+
+        const data = {
+            taskName,
+            bucket,
+            priority,
+            startDate,
+            dueDate,
+            description,
+            checklist,
+            comments
+        }
+        console.log(data);
+        const url ="http://127.0.0.1:5000/update_task/" + `${currentTask._id}` 
+        const options = {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
+        const response = await fetch(url, options)
+        if(response.status !== 200) {
+            const data = await response.json()
+            alert(data.message);
+        } else {
+            updateCallback(data);
+        }
     }
 
     return (
@@ -24,36 +48,45 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
             <form>
                 <div>
                     <label htmlFor="task-name">Task Name:</label>
-                    <input type="text" className="task-name" defaultValue={taskName} onClick={e => setTaskName(e.target.value)} />
+                    <input type="text" className="task-name" value={taskName} onChange={e => setTaskName(e.target.value)} />
                 </div>
                 <div>
-                    <textarea type="text" rows="4" className="task-description" defaultValue={description} onClick={e => setDescription(e.target.value)} />
+                    <textarea type="text" rows="4" className="task-description" value={description} onChange={e => setDescription(e.target.value)} />
                 </div>
                 <div>
-                    <input type="text" className="task-bucket" defaultValue={bucket} onClick={e => setBucket(e.target.value)} />
+                    <input type="text" className="task-bucket" value={bucket} onChange={e => setBucket(e.target.value)} />
                 </div>
                 <div>
-                    <input type="text" className="task-priority" defaultValue={priority} onClick={e => setPriority(e.target.value)} />
+                    <input type="text" className="task-priority" value={priority} onChange={e => setPriority(e.target.value)} />
                 </div>
                 <div>
-                    <input type="date" className="task-start-date" defaultValue={startDate.slice(0, 10)} onClick={e => setStartDate(e.target.value)} />
+                    <input type="date" className="task-start-date" value={startDate.slice(0, 10)} onChange={e => setStartDate(e.target.value)} />
                 </div>
                 <div>
-                    <input type="date" className="task-due-date" defaultValue={dueDate.slice(0, 10)} onClick={e => setDueDate(e.target.value)} />
+                    <input type="date" className="task-due-date" value={dueDate.slice(0, 10)} onChange={e => setDueDate(e.target.value)} />
                 </div>
                 <div className="checklist">
                     <h2>Checklist</h2>
                     {checklist.map(item => {
-                        return <div key={item._id} className="checklist-item">{item.taskName}</div>
+                        return <div key={item._id} className="checklist-item">
+                            <input type="text" className="checklist-item-input" value={item.taskName} />
+                        </div>
                     })}
                 </div>
                 <div className="comments">
                     <h2>Comments</h2>
                     {comments.map(item => {
-                        return <div key={item._id} className="checklist-item">{item.comment}</div>
+                        return (
+                            <div key={item._id} className="comment-wrapper">
+                                <div className="comment-item">{item.comment}</div>
+                                <div className="comment-date">{item.commentTime}</div>
+                                <div className="comment-person">{item.person}</div>
+                            </div>
+                        )
                     })}
                 </div>
                 <button className="submit-task-changes" onClick={updateTask}>Save</button>
+                <button className="reset-task-changes" type="reset">Reset Values</button>
             </form>
 
 
