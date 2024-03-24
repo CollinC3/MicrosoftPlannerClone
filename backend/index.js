@@ -32,21 +32,6 @@ app.get('/tasks', async (req, res) => {
 
 });
 
-//Add new task
-//Add a new task to the database
-app.post('/create_task', async (req, res) => {
-    try {
-        const data = req.body;
-        if (!data.taskName || !data.bucket) {
-            return res.status(400).json({ "message": "Please enter a Task name and Bucket" });
-        }
-        Tasks.create(req.body);
-        res.status(201).json({ "message": "Task created" });
-    } catch (error) {
-        res.status(400).json({ "message": "Server Error" });
-    }
-});
-
 //Get column names
 //Figure out what columns are used in the database
 app.get('/get_column_names', async (req, res) => {
@@ -57,6 +42,34 @@ app.get('/get_column_names', async (req, res) => {
         res.status(400).json({ "message": error });
     }
 });
+
+//Add new task
+//Add a new task to the database
+app.post('/create_task', async (req, res) => {
+    try {
+        const data = req.body;
+        if (!data.taskName || !data.bucket) {
+            return res.status(400).json({ "message": "Please enter a Task name and Bucket" });
+        }
+        Tasks.create(data);
+        res.status(201).json({ "message": "Task created" });
+    } catch (error) {
+        res.status(400).json({ "message": "Server Error" });
+    }
+});
+
+//Update a task
+app.patch('/update_task/:id', async (req, res) => {
+    try {
+        const task = await Tasks.findByIdAndUpdate(req.params.id, req.body, {"returnDocument": "after"});
+        if (!task) {
+            return res.status(404).json({ "message": "Cannot find task" });
+        }
+        res.status(200).json({ "message": "Task created"});
+    } catch (error) {
+        res.status(400).json({ "message": error });
+    }
+})
 
 //Delete a task
 //Deletes a task from the database
