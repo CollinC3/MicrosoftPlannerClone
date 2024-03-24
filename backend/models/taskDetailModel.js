@@ -5,14 +5,9 @@ const taskDetailSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        assignedPerson: String,
         bucket: {
             type: String,
             required: true
-        },
-        progress: {
-            type: String,
-            default: "Not Started"
         },
         priority: {
             type: String,
@@ -21,17 +16,15 @@ const taskDetailSchema = mongoose.Schema(
         startDate: Date,
         dueDate: Date,
         description: String,
-        checklist: {
-            id: Number,
+        checklist: [{
             taskName: String,
             completed: Boolean
-        },
-        comments: {
-            id: Number,
+        }],
+        comments: [{
             comment: String,
             person: String,
             commentTime: Date
-        }
+        }]
     }
 )
 
