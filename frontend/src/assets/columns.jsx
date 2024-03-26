@@ -60,7 +60,7 @@ function Columns() {
                 </div>
             )}
             {modalOpen && 
-                <TaskDetails currentTask={currentTask} updateCallback={closeModal}/>
+                <TaskDetails currentTask={currentTask} updateCallback={closeModal} columns={columns}/>
             }
         </div>
         
