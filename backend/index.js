@@ -65,7 +65,7 @@ app.patch('/update_task/:id', async (req, res) => {
         if (!task) {
             return res.status(404).json({ "message": "Cannot find task" });
         }
-        res.status(200).json({ "message": "Task created"});
+        res.status(200).json({ "message": "Task updated"});
     } catch (error) {
         res.status(400).json({ "message": error });
     }
