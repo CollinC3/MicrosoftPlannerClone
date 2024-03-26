@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TaskDetails = ({ currentTask, updateCallback }) => {
+const TaskDetails = ({ currentTask, updateCallback, columns }) => {
     const [taskName, setTaskName] = useState(currentTask.taskName || "");
     const [bucket, setBucket] = useState(currentTask.bucket || "");
     const [priority, setPriority] = useState(currentTask.priority || "");
@@ -9,6 +9,7 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
     const [description, setDescription] = useState(currentTask.description || "");
     const [checklist, setChecklist] = useState(currentTask.checklist || []);
     const [comments, setComments] = useState(currentTask.comments || []);
+    const priorities = ["Low", "Medium", "High"];
 
 
     const updateTask = async (e) => {
@@ -24,8 +25,7 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
             checklist,
             comments
         }
-        console.log(data);
-        const url ="http://127.0.0.1:5000/update_task/" + `${currentTask._id}` 
+        const url = "http://127.0.0.1:5000/update_task/" + `${currentTask._id}`
         const options = {
             method: "PATCH",
             headers: {
@@ -34,7 +34,7 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
             body: JSON.stringify(data)
         }
         const response = await fetch(url, options)
-        if(response.status !== 200) {
+        if (response.status !== 200) {
             const data = await response.json()
             alert(data.message);
         } else {
@@ -54,10 +54,19 @@ const TaskDetails = ({ currentTask, updateCallback }) => {
                     <textarea type="text" rows="4" className="task-description" value={description} onChange={e => setDescription(e.target.value)} />
                 </div>
                 <div>
-                    <input type="text" className="task-bucket" value={bucket} onChange={e => setBucket(e.target.value)} />
+                    <select className="task-bucket" value={bucket} onChange={e => setBucket(e.target.value)}>
+                        {columns.map((col) => {
+                            return <option key={col} value={col}>{col}</option>
+                        })}
+                    </select>
                 </div>
                 <div>
-                    <input type="text" className="task-priority" value={priority} onChange={e => setPriority(e.target.value)} />
+                    {/* <input type="text" className="task-priority" value={priority} onChange={e => setPriority(e.target.value)} /> */}
+                    <select className="task-priority" value={priority} onChange={e => setPriority(e.target.value)}>
+                        {priorities.map((pri) => {
+                            return <option key={pri} value={pri}>{pri}</option>
+                        })}
+                    </select>
                 </div>
                 <div>
                     <input type="date" className="task-start-date" value={startDate.slice(0, 10)} onChange={e => setStartDate(e.target.value)} />
