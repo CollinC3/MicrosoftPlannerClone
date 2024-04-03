@@ -137,3 +137,8 @@ body {
   font-size: 28px;
   font-weight: bold;
 }
+
+.commentWrapper {
+  display: flex;
+  flex-direction: row;
+}

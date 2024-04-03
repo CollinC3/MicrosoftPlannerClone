@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './taskDetailsModal.css'
 
 const TaskDetails = ({ currentTask, updateCallback, columns }) => {
     const [taskName, setTaskName] = useState(currentTask.taskName || "");
@@ -92,9 +93,9 @@ const TaskDetails = ({ currentTask, updateCallback, columns }) => {
                     {comments.map((item, ind) => {
                         return (
                             <div key={item._id} className="comment-wrapper">
-                                <div className="comment-item">{item.comment}</div>
-                                <div className="comment-date">{item.commentTime}</div>
                                 <div className="comment-person">{item.person}</div>
+                                <div className="comment-date">{item.commentTime.slice(0, 10)}</div>
+                                <div className="comment-item">{item.comment}</div>
                             </div>
                         )
                     })}

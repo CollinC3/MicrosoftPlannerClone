@@ -1,0 +1,18 @@
+.task-details-modal {
+    background-color: white;
+    color: black;
+}
+
+.comment-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.comment-person {
+    width: 50%;
+}
+
+.comment-date {
+    width: 50%;
+}
