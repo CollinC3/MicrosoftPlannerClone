@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './taskDetailsModal.css'
 
 const TaskDetails = ({ currentTask, updateCallback, columns }) => {
     const [taskName, setTaskName] = useState(currentTask.taskName || "");
@@ -11,6 +12,11 @@ const TaskDetails = ({ currentTask, updateCallback, columns }) => {
     const [comments, setComments] = useState(currentTask.comments || []);
     const priorities = ["Low", "Medium", "High"];
 
+    const updateCheckList = (e, index) => {
+        const checkListCopy = [...checklist];
+        checkListCopy[index].taskName = e.target.value;
+        setChecklist(checkListCopy);
+    }
 
     const updateTask = async (e) => {
         e.preventDefault();
@@ -76,20 +82,20 @@ const TaskDetails = ({ currentTask, updateCallback, columns }) => {
                 </div>
                 <div className="checklist">
                     <h2>Checklist</h2>
-                    {checklist.map(item => {
+                    {checklist.map((item, ind) => {
                         return <div key={item._id} className="checklist-item">
-                            <input type="text" className="checklist-item-input" value={item.taskName} />
+                            <input type="text" className="checklist-item-input" defaultValue={item.taskName} onChange={(e) => updateCheckList(e, ind)} />
                         </div>
                     })}
                 </div>
                 <div className="comments">
                     <h2>Comments</h2>
-                    {comments.map(item => {
+                    {comments.map((item, ind) => {
                         return (
                             <div key={item._id} className="comment-wrapper">
-                                <div className="comment-item">{item.comment}</div>
-                                <div className="comment-date">{item.commentTime}</div>
                                 <div className="comment-person">{item.person}</div>
+                                <div className="comment-date">{item.commentTime.slice(0, 10)}</div>
+                                <div className="comment-item">{item.comment}</div>
                             </div>
                         )
                     })}
