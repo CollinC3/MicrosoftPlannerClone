@@ -41,6 +41,7 @@ function Columns() {
             {columns.map((column) =>
                 <div key={column} className="column">
                     <div className="columnName">{column}</div>
+                    <button className="editColumnName">Edit Column Name</button>
                     <div className='taskBtnWrapper'>
                         <button className="addTaskBtn">Add Task</button>
                     </div>

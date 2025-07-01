@@ -43,6 +43,8 @@ app.get('/get_column_names', async (req, res) => {
     }
 });
 
+//Update column name
+
 //Add new task
 //Add a new task to the database
 app.post('/create_task', async (req, res) => {

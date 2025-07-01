@@ -138,7 +138,3 @@ body {
   font-weight: bold;
 }
 
-.commentWrapper {
-  display: flex;
-  flex-direction: row;
-}
