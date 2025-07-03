@@ -1,7 +1,9 @@
 //Imports
 const express = require('express');
+const cors = require('cors');
 const sqlite = require('sqlite3').verbose();
 const app = express();
+app.use(cors());
 
 
 //Connect to DB
@@ -26,6 +28,35 @@ app.get('/get_column_names', (req, res) => {
         res.status(400).json({ "message": error });
     }  
 })
+
+//Get specific column task details
+//Given a specific task id, get all the detail and display in the modal pop-up
+app.get('/tasks/:columnId', async (req, res) => {
+    let sql = "SELECT * FROM Tasks WHERE columnId=" + req.params.columnId;
+    try {
+        db.all(sql, [], (err, rows) => {
+            if (err) return res.status(300).json({ "message": err });
+            res.status(200).json({ "tasks": rows });
+        })
+    } catch (error) {
+        res.status(400).json({ "message": error });
+    }
+})
+
+//Get all task details
+//Given a specific task id, get all the detail and display in the modal pop-up
+app.get('/tasks', async (req, res) => {
+    let sql = "SELECT Tasks.*, ColumnNames.columnName FROM Tasks LEFT JOIN ColumnNames ON Tasks.columnId = ColumnNames.columnId";
+    try {
+        db.all(sql, [], (err, rows) => {
+            if (err) return res.status(300).json({ "message": err });
+            res.status(200).json({ "tasks": rows });
+        })
+    } catch (error) {
+        res.status(400).json({ "message": error });
+    }
+})
+
 app.listen(5000, () => {
     console.log("Listening on port 5000");
 })
