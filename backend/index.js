@@ -20,7 +20,7 @@ app.get('/get_column_names', (req, res) => {
     try {
         db.all(sql, [], (err, rows) => {
             if (err) return res.status(300).json({ "message": err });
-            res.status(200).json({ "message": rows });
+            res.status(200).json({ "tasks": rows });
         })
     } catch (error) {
         res.status(400).json({ "message": error });
