@@ -1,16 +1,16 @@
 -- SQLite
 
--- INSERT INTO ColumnNames(columnName)
--- VALUES 
---     ("Hockey"),
---     ("Planner Clone"),
---     ("Renting");
-
-INSERT INTO Tasks(columnId, taskName, taskDescription, taskPriority, taskStatus, taskStartDate, taskEndDate)
+INSERT INTO ColumnNames(columnName)
 VALUES 
-    (1, "Team Build", "This is a task to build out a hockey team builder for the adult rec league.", "Low", "Not Started", "", ""),
-    (2, "Work on Planner Clone", "This is a task to build out the Planner clone.","Medium","In-Progress", "2024-04-07", ""),
-    (3, "Look for Rental properties", "This is a task to look for rental properties.","High","In-Progress", "2025-06-28", "");
+    ("Hockey"),
+    ("Planner Clone"),
+    ("Renting");
+
+INSERT INTO Tasks(columnId, taskName, taskDescription, taskPriority, taskStatus, taskStartDate, taskDueDate, taskEndDate)
+VALUES 
+    (1, "Team Build", "This is a task to build out a hockey team builder for the adult rec league.", "Low", "Not Started", "", "2025-08-07", ""),
+    (2, "Work on Planner Clone", "This is a task to build out the Planner clone.","Medium","In-Progress", "2024-04-07", "2026-01-05", ""),
+    (3, "Look for Rental properties", "This is a task to look for rental properties.","High","In-Progress", "2025-06-28", "2025-07-31", "");
 
 INSERT INTO CheckList(taskId, itemDescription, itemComplete)
 VALUES

@@ -30,9 +30,11 @@ function Columns() {
         setCurrentTask(task);
     }
 
-    const closeModal = () => {
-        setModalOpen(false);
-        setCurrentTask();
+    const UpdateTasks = (modalOpen) => {
+        if (modalOpen === false) {
+            setModalOpen(modalOpen);
+            setCurrentTask();
+        }
         fetchTasks();
     }
 
@@ -51,7 +53,7 @@ function Columns() {
                                 return <div onClick={() => OpenModal(task)} key={task.taskId} className="column-task">
                                     <div className="task-Name">{task.taskName}</div>
                                     <div className="task-Description">{task.taskDescription}</div>
-                                    <div className="task-DueDate">{task.taskEndDate}</div>
+                                    <div className="task-DueDate">{task.taskDueDate}</div>
                                 </div>
                             }
                         }
@@ -61,7 +63,7 @@ function Columns() {
                 </div> 
             )}
             {modalOpen && 
-                <TaskDetails currentTask={currentTask} updateCallback={closeModal} columns={columns}/>
+                <TaskDetails currentTask={currentTask} updateCallback={UpdateTasks} columns={columns}/>
             }
         </div>
         

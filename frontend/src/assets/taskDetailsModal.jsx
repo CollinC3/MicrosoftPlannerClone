@@ -2,16 +2,27 @@ import React, { useState } from "react";
 import './taskDetailsModal.css'
 
 const TaskDetails = ({ currentTask, updateCallback, columns }) => {
+    const [columnId, setColumnId] = useState(currentTask.columnId || "");
     const [taskName, setTaskName] = useState(currentTask.taskName || "");
     const [columnName, setColumnName] = useState(currentTask.columnName || "");
-    const [priority, setPriority] = useState(currentTask.taskPriority || "");
-    const [startDate, setStartDate] = useState(currentTask.taskStartDate || "");
-    const [dueDate, setDueDate] = useState(currentTask.taskDueDate || "");
-    const [description, setDescription] = useState(currentTask.taskDescription || "");
-    const [status, setStatus] = useState(currentTask.taskStatus || "")
+    const [taskPriority, setTaskPriority] = useState(currentTask.taskPriority || "");
+    const [taskStartDate, setTaskStartDate] = useState(currentTask.taskStartDate || "");
+    const [taskDueDate, setTaskDueDate] = useState(currentTask.taskDueDate || "");
+    const [taskEndDate, setTaskEndDate] = useState(currentTask.taskEndDate || "");
+    const [taskDescription, setTaskDescription] = useState(currentTask.taskDescription || "");
+    const [taskStatus, setTaskStatus] = useState(currentTask.taskStatus || "")
     // const [checklist, setChecklist] = useState(currentTask.checklist || []);
     // const [comments, setComments] = useState(currentTask.comments || []);
     const priorities = ["Low", "Medium", "High"];
+    const statuses = ["Not Started", "In-Progress", "Completed", "On Hold"];
+
+    const handleColumnChange = (e) => {
+        const selectedValue = e.target.value;
+        const cId = columns.find(col => col.columnName === selectedValue);
+        console.log(cId + "Hi");
+        setColumnName(selectedValue);  
+        setColumnId(cId.columnId);
+    }
 
     const updateCheckList = (e, index) => {
         const checkListCopy = [...checklist];
@@ -23,12 +34,14 @@ const TaskDetails = ({ currentTask, updateCallback, columns }) => {
         e.preventDefault();
 
         const data = {
+            columnId,
             taskName,
-            bucket,
-            priority,
-            startDate,
-            dueDate,
-            description,
+            taskDescription,
+            taskPriority,
+            taskStatus,
+            taskStartDate,
+            taskDueDate,
+            taskEndDate
             // checklist,
             // comments
         }
@@ -40,46 +53,48 @@ const TaskDetails = ({ currentTask, updateCallback, columns }) => {
             },
             body: JSON.stringify(data)
         }
-        const response = await fetch(url, options)
-        if (response.status !== 200) {
-            const data = await response.json()
-            alert(data.message);
-        } else {
-            updateCallback(data);
-        }
+        await fetch(url, options);
+        updateCallback(true);
     }
 
     return (
         <dialog open className="task-details-modal">
-            <span className='close' onClick={() => updateCallback()}>&times;</span>
+            <span className='close' onClick={() => updateCallback(false)}>&times;</span>
             <form>
                 <div>
                     <label htmlFor="task-name">Task Name:</label>
                     <input type="text" className="task-name" value={taskName} onChange={e => setTaskName(e.target.value)} />
                 </div>
                 <div>
-                    <textarea type="text" rows="4" className="task-description" value={description} onChange={e => setDescription(e.target.value)} />
+                    <textarea type="text" rows="4" className="task-taskDescription" value={taskDescription} onChange={e => setTaskDescription(e.target.value)} />
                 </div>
-                <div>
-                    <select className="task-bucket" value={columnName} onChange={e => setColumnName(e.target.value)}>
+                <div className={columnId}>
+                    <select className="task-bucket" value={columnName} onChange={(e) => handleColumnChange(e)}>
                         {columns.map((col) => {
-                            return <option key={col.columnId} value={col.columnName}>{columnName}</option>
+                            return <option key={col.columnId} value={col.columnName}>{col.columnName}</option>
                         })}
                     </select>
                 </div>
                 <div>
-                    {/* <input type="text" className="task-priority" value={priority} onChange={e => setPriority(e.target.value)} /> */}
-                    <select className="task-priority" value={priority} onChange={e => setPriority(e.target.value)}>
+                    <select className="task-status" value={taskStatus} onChange={e => setTaskStatus(e.target.value)}>
+                        {statuses.map((stat) => {
+                            return <option key={stat} value={stat}>{stat}</option>
+                        })}
+                    </select>
+                </div>
+                <div>
+                    {/* <input type="text" className="task-taskPriority" value={taskPriority} onChange={e => setTaskPriority(e.target.value)} /> */}
+                    <select className="task-taskPriority" value={taskPriority} onChange={e => setTaskPriority(e.target.value)}>
                         {priorities.map((pri) => {
                             return <option key={pri} value={pri}>{pri}</option>
                         })}
                     </select>
                 </div>
                 <div>
-                    <input type="date" className="task-start-date" value={startDate.slice(0, 10)} onChange={e => setStartDate(e.target.value)} />
+                    <input type="date" className="task-start-date" value={taskStartDate} onChange={e => setTaskStartDate(e.target.value)} />
                 </div>
                 <div>
-                    <input type="date" className="task-due-date" value={dueDate.slice(0, 10)} onChange={e => setDueDate(e.target.value)} />
+                    <input type="date" className="task-due-date" value={taskDueDate} onChange={e => setTaskDueDate(e.target.value)} />
                 </div>
                 {/* <div className="checklist">
                     <h2>Checklist</h2>

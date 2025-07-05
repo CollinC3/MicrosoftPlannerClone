@@ -13,6 +13,7 @@ CREATE TABLE Tasks(
     taskPriority TEXT,
     taskStatus TEXT,
     taskStartDate DATE,
+    taskDueDate DATE,
     taskEndDate DATE,
     PRIMARY KEY(taskID),
     FOREIGN KEY(columnid) REFERENCES ColumnNames(columnid)
