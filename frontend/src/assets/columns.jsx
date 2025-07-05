@@ -34,8 +34,9 @@ function Columns() {
         if (modalOpen === false) {
             setModalOpen(modalOpen);
             setCurrentTask();
+        } else {
+            fetchTasks();
         }
-        fetchTasks();
     }
 
     return (
