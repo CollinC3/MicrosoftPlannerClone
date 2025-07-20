@@ -1,6 +1,7 @@
 /*
 TODO List
-    - 
+    - If taskId is empty, call a different route when saving a task
+    - Check for no task id when fetching Checklist and Comments
 
 */
 
@@ -16,8 +17,7 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
         taskEndDate: task.taskEndDate,
         taskDueDate: task.taskDueDate,
         taskDescription: task.taskDescription,
-        taskStatus: task.taskStatus,
-        checklist: task.checklist
+        taskStatus: task.taskStatus
     })
     const [columnName, setColumnName] = useState(columns.find(col => col.columnId === taskData.columnId).columnName);
     const [checklist, setChecklist] = useState([]);
@@ -26,11 +26,15 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
     const statuses = ["Not Started", "In-Progress", "Completed", "On Hold"];
 
     useEffect(() => {
-        fetchChecklist();
+        if (task.taskId !== "") {
+            fetchChecklist();
+        }
     }, []);
 
     useEffect(() => {
-        fetchComments();
+        if (task.taskId !== "") {
+            fetchComments();
+        }
     }, []);
 
     const handleTaskChange = (field, value) => {
@@ -69,11 +73,17 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
         setComments(data.comments)
     }
 
-    const updateTask = async (e) => {
+    const saveTask = async (e) => {
         e.preventDefault();
-        const url = "http://127.0.0.1:5000/update_task/" + `${task.taskId}`
+        if (task.taskId === "") {
+            var url = "http://127.0.0.1:5000/create_task/"
+            var method = "POST";
+        } else {
+            var url = "http://127.0.0.1:5000/update_task/" + `${task.taskId}`
+            var method = "PATCH";
+        }
         const options = {
-            method: "PATCH",
+            method: method,
             headers: {
                 "Content-Type": "application/json"
             },
@@ -125,7 +135,7 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
                     <h2>Checklist</h2>
                     {checklist.map((item, ind) => {
                         return <div key={item.checklistId} className="checklist-item">
-                            <input type="text" className="checklist-item-input" defaultValue={item.itemDescription} OnChange={e => updateCheckList(e, item.checklistId)} />
+                            <input type="text" className="checklist-item-input" defaultValue={item.itemDescription} onChange={e => updateCheckList(e, item.checklistId)} />
                         </div>
                     })}
                 </div>
@@ -141,8 +151,8 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
                         )
                     })}
                 </div>
-                <button className="submit-task-changes" onClick={updateTask}>Save</button>
-                <button className="reset-task-changes" type="reset">Reset Values</button>
+                <button className="submit-task-changes" onClick={saveTask}>Save</button>
+                <button className="delete-task-changes" type="reset">Reset Values</button>
             </form>
 
 

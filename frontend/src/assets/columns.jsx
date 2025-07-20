@@ -22,7 +22,7 @@ function Columns() {
     const fetchColumns = async () => {
       const response = await fetch("http://127.0.0.1:5000/get_column_names");
       const data = await response.json();
-      setColumns(data.tasks);
+      setColumns(data.columns);
     }
 
     const OpenModal = (task) => {
@@ -39,6 +39,22 @@ function Columns() {
         }
     }
 
+    const AddTaskHandler = (e) => {
+        const newTask = ({
+            taskId: "",
+            columnId: +e.target.dataset.columnId,
+            taskName: "",
+            taskPriority: "",
+            taskStartDate: "",
+            taskEndDate: "",
+            taskDueDate: "",
+            taskDescription: "",
+            taskStatus: "",
+        })
+        OpenModal(newTask);
+    }
+
+
     return (
         <div className="taskArea">
             {columns.map((column) =>
@@ -46,7 +62,7 @@ function Columns() {
                     <div className="columnName">{column.columnName}</div>
                     <button className="editColumnName">Edit Column Name</button>
                     <div className='taskBtnWrapper'>
-                        <button className="addTaskBtn">Add Task</button>
+                        <button className="addTaskBtn" data-column-id={column.columnId} onClick={(e) => AddTaskHandler(e)}>Add Task</button>
                     </div>
                     <div className='tasks-wrapper'>
                         {tasks.map(task => {
@@ -64,7 +80,7 @@ function Columns() {
                 </div> 
             )}
             {modalOpen && 
-                <TaskDetails currentTask={currentTask} updateCallback={UpdateTasks} columns={columns}/>
+                <TaskDetails task={currentTask} updateCallback={UpdateTasks} columns={columns}/>
             }
         </div>
         
