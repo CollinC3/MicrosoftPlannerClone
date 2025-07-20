@@ -16,3 +16,7 @@
 .comment-date {
     width: 50%;
 }
+
+h2 {
+    margin-bottom: 0;
+}

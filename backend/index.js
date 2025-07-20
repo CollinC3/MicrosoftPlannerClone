@@ -25,7 +25,7 @@ app.get('/get_column_names', (req, res) => {
     try {
         db.all(sql, [], (err, rows) => {
             if (err) return res.status(300).json({ "message": err });
-            res.status(200).json({ "tasks": rows });
+            res.status(200).json({ "columns": rows });
         })
     } catch (error) {
         res.status(400).json({ "message": error });
@@ -105,8 +105,32 @@ app.patch('/update_task/:taskId', (req, res) => {
     }
 })
 
+//Given a specific task id, get all the checklist item
+app.get('/tasks/checklist/:taskId', (req, res) => {
+    let sql = "SELECT * FROM CheckList WHERE taskId=" + req.params.taskId;
+    try {
+        db.all(sql, [], (err, items) => {
+            if (err) return res.status(300).json({ "message": err });
+            res.status(200).json({ "checklist": items });
+        })
+    } catch (error) {
+        res.status(400).json({ "message": error });
+    }
+})
+
+//Given a specific task id, get all the checklist item
+app.get('/tasks/comments/:taskId', (req, res) => {
+    let sql = "SELECT * FROM Comments WHERE taskId=" + req.params.taskId;
+    try {
+        db.all(sql, [], (err, items) => {
+            if (err) return res.status(300).json({ "message": err });
+            res.status(200).json({ "comments": items });
+        })
+    } catch (error) {
+        res.status(400).json({ "message": error });
+    }
+})
+
 app.listen(5000, () => {
     console.log("Listening on port 5000");
 })
-
-
