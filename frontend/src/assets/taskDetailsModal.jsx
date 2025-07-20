@@ -102,9 +102,11 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
                     <input type="text" className="task-name" value={taskData.taskName} onChange={e => handleTaskChange('taskName', e.target.value)} />
                 </div>
                 <div>
+                    <label htmlFor="task-taskDescription">Task Description:</label>
                     <textarea type="text" rows="4" className="task-taskDescription" value={taskData.taskDescription} onChange={e => handleTaskChange('taskDescription', e.target.value)} />
                 </div>
                 <div className={taskData.columnId}>
+                    <label htmlFor="task-bucket">Column:</label>
                     <select className="task-bucket" value={columnName} onChange={(e) => handleColumnChange(e)}>
                         {columns.map((col) => {
                             return <option key={col.columnId} value={col.columnName}>{col.columnName}</option>
@@ -112,6 +114,7 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
                     </select>
                 </div>
                 <div>
+                    <label htmlFor="task-status">Task Status:</label>
                     <select className="task-status" value={taskData.taskStatus} onChange={e => handleTaskChange('taskStatus', e.target.value)}>
                         {statuses.map((stat) => {
                             return <option key={stat} value={stat}>{stat}</option>
@@ -119,6 +122,7 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
                     </select>
                 </div>
                 <div>
+                    <label htmlFor="task-taskPriority">Priority:</label>
                     <select className="task-taskPriority" value={taskData.taskPriority} onChange={e => handleTaskChange('taskPriority', e.target.value)}>
                         {priorities.map((pri) => {
                             return <option key={pri} value={pri}>{pri}</option>
@@ -126,9 +130,11 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
                     </select>
                 </div>
                 <div>
+                    <label htmlFor="task-start-date">Start Date:</label>
                     <input type="date" className="task-start-date" value={taskData.taskStartDate} onChange={e => handleTaskChange('taskStartDate', e.target.value)} />
                 </div>
                 <div>
+                    <label htmlFor="task-due-date">Due Date:</label>
                     <input type="date" className="task-due-date" value={taskData.taskDueDate} onChange={e => handleTaskChange('taskDueDate', e.target.value)} />
                 </div>
                 <div className="checklist">
