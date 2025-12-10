@@ -34,15 +34,14 @@ function Columns() {
         if (modalOpen === false) {
             setModalOpen(modalOpen);
             setCurrentTask();
-        } else {
-            fetchTasks();
         }
+        fetchTasks();
     }
 
     const AddTaskHandler = (e) => {
         const newTask = ({
             taskId: "",
-            columnId: +e.target.dataset.columnId,
+            columnId: parseInt(e.target.dataset.columnId),
             taskName: "",
             taskPriority: "",
             taskStartDate: "",
@@ -67,7 +66,7 @@ function Columns() {
                     <div className='tasks-wrapper'>
                         {tasks.map(task => {
                             if (task.columnId == column.columnId) {
-                                return <div onClick={() => OpenModal(task)} key={task.taskId} className="column-task">
+                                return <div onClick={() => OpenModal(task)} key={task.taskId} className={`column-task${task.taskStatus === "Completed" ? "-complete" : ""}`}>
                                     <div className="task-Name">{task.taskName}</div>
                                     <div className="task-Description">{task.taskDescription}</div>
                                     <div className="task-DueDate">{task.taskDueDate}</div>

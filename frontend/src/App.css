@@ -79,6 +79,17 @@ body {
   margin: 0px 20px;
 }
 
+.column-task-complete {
+  border: 1px solid black;
+  margin: 5px;
+  background-color: green;
+}
+
+.column-task-complete > * {
+  margin: 10px 20px;
+  text-align: left;
+}
+
 .column-task {
   border: 1px solid black;
   margin: 5px;

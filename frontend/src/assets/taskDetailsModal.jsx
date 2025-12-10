@@ -25,6 +25,8 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
     const priorities = ["Low", "Medium", "High"];
     const statuses = ["Not Started", "In-Progress", "Completed", "On Hold"];
 
+
+    //Figure out why I used 2 useEffects here
     useEffect(() => {
         if (task.taskId !== "") {
             fetchChecklist();
@@ -93,6 +95,22 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
         updateCallback(true);
     }
 
+    const deleteTask = async (e) => {
+        e.preventDefault();
+
+        var url = "http://127.0.0.1:5000/delete_task/" + `${task.taskId}`
+        var method = "DELETE";
+
+        const options = {
+            method: method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+        await fetch(url, options);
+        updateCallback(false);
+    }
+
     return (
         <dialog open className="task-details-modal">
             <span className='close' onClick={() => updateCallback(false)}>&times;</span>
@@ -159,6 +177,7 @@ const TaskDetails = ({ task, updateCallback, columns }) => {
                 </div>
                 <button className="submit-task-changes" onClick={saveTask}>Save</button>
                 <button className="delete-task-changes" type="reset">Reset Values</button>
+                <button className="delete-task" onClick={deleteTask}>Delete</button>
             </form>
 
 

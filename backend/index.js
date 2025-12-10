@@ -49,7 +49,7 @@ app.get('/get_column_names', (req, res) => {
 //Get all task details
 //Given a specific task id, get all the detail and display in the modal pop-up
 app.get('/tasks', (req, res) => {
-    let sql = "SELECT Tasks.*, ColumnNames.columnName FROM Tasks LEFT JOIN ColumnNames ON Tasks.columnId = ColumnNames.columnId";
+    let sql = "SELECT Tasks.*, ColumnNames.columnName FROM Tasks LEFT JOIN ColumnNames ON Tasks.columnId = ColumnNames.columnId"; //Might be able to take out the columnName join
     try {
         db.all(sql, [], (err, rows) => {
             if (err) return res.status(300).json({ "message": err });
